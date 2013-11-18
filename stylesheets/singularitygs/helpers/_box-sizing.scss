@@ -1,4 +1,4 @@
-@import "compass/css3/shared";
+@import "compass/support";
 
 $box-sizing-extend: true !default;
 $toolkit-box-sizing: false !default;
@@ -15,12 +15,10 @@ $toolkit-box-sizing: false !default;
   }
   @else {
     $bs: unquote($bs);
-    @include experimental(box-sizing, $bs,
-      -moz, -webkit, not -o, not -ms, not -khtml, official
-    );
+    @include prefixed-properties(css3-boxsizing, $box-sizing-support-threshold, (box-sizing: $box-model));
 
     @if $bs == 'border-box' {
-      @if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+      @include for-legacy-browser("ie", "7") {
         *behavior: stylesheet-url("../behaviors/box-sizing/boxsizing.php");
       }
     }
